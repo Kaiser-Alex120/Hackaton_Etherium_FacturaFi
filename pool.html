@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pool de liquidez — FacturaFi</title>
+<link rel="icon" type="image/jpeg" href="assets/mascota-facturafi.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Archivo:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="brand"><span class="brand-mark"><img src="assets/mascota-facturafi.jpg" alt="Mascota FacturaFi"></span> FacturaFi</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Inicio</a>
+    <a href="pool.html" style="color:var(--text);">Vista del pool</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-ghost btn-sm" id="btn-como-usar" data-kb="como-usar-prestamista">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2 2-2 3.5"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      ¿Cómo uso esto?
+    </button>
+    <span id="wallet-slot"></span>
+    <button class="btn btn-ghost btn-sm" id="btn-logout-inv">Cerrar sesión</button>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="app-header">
+    <button class="identity identity-btn" id="btn-perfil-inv" type="button">
+      <div class="avatar" id="inv-avatar" style="background:var(--gold); color:var(--text);">--</div>
+      <div>
+        <div class="name" id="inv-nombre">Cargando…</div>
+        <div class="sub">Saldo: <b id="inv-saldo" style="color:var(--text);">—</b></div>
+      </div>
+      <span class="identity-edit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+        Mi perfil
+      </span>
+    </button>
+    <div>
+      <h2 class="app-title" style="text-align:right;">Pool de liquidez</h2>
+      <p class="mb-0 faint" style="font-size:.85rem; text-align:right;">Compra opciones específicas o deposita al pool diversificado.</p>
+    </div>
+  </div>
+
+  <div class="onchain-card" id="onchain-card" style="display:none;">
+    <div class="onchain-dot"></div>
+    <div>
+      <div class="cell-strong" style="font-size:.85rem;">Datos reales leídos del contrato en Ethereum</div>
+      <div class="faint mono" style="font-size:.74rem;" id="onchain-address">—</div>
+    </div>
+    <div class="onchain-stats">
+      <div><span class="v" id="onchain-contratos">—</span><span class="k">contratos</span></div>
+      <div><span class="v" id="onchain-facturas">—</span><span class="k">facturas</span></div>
+    </div>
+  </div>
+
+  <div class="kpi-row reveal">
+    <div class="kpi">
+      <div class="label">Liquidez total</div>
+      <div class="value" id="kpi-total">—</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Liquidez disponible</div>
+      <div class="value" id="kpi-disponible">—</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Utilización</div>
+      <div class="value" id="kpi-utilizacion">—</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Health factor <span class="faint" style="text-transform:none;">(pausa si &lt; 1)</span></div>
+      <div class="value" id="kpi-health">—</div>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-bottom:32px; max-width:560px;">
+    <h4>Depositar / retirar</h4>
+    <p style="font-size:.84rem;">Simulación de posición en el pool (USDC). El fondo financia facturas tokenizadas por PYMEs verificadas.</p>
+
+    <div class="hint" id="fondeo-wallet-estado" style="margin-bottom:16px;">Conecta tu wallet en la barra de arriba para depositar desde tu propia dirección.</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="in-deposito">Monto</label>
+        <input type="number" id="in-deposito" min="0" step="100" value="0">
+      </div>
+      <div class="field">
+        <label for="in-moneda">Moneda</label>
+        <select id="in-moneda">
+          <option value="USDC" selected>USDC</option>
+          <option value="USDT">USDT</option>
+          <option value="DAI">DAI</option>
+          <option value="PEN">PEN (Soles)</option>
+        </select>
+      </div>
+    </div>
+    <div class="hint" style="margin-top:-6px; margin-bottom:16px;">En esta demo todo se contabiliza internamente como USDC equivalente — la moneda solo simula cómo se vería con varias stablecoins.</div>
+
+    <div class="flex gap-8">
+      <button class="btn btn-emerald btn-block" id="btn-depositar">Depositar</button>
+      <button class="btn btn-ghost btn-block" id="btn-retirar">Retirar</button>
+    </div>
+    <button type="button" class="btn btn-outline btn-block" id="btn-fondos-prueba" style="margin-top:10px;">+ Cargar 10,000 USDC de prueba</button>
+    <div class="divider"></div>
+    <div class="faint" style="font-size:.78rem; margin-bottom:10px;">Prestamistas activos</div>
+    <ul id="lista-lp" style="display:flex; flex-direction:column; gap:8px;"></ul>
+  </div>
+
+  <div class="text-center reveal" style="max-width:660px; margin:44px auto 24px;">
+    <span class="eyebrow">Reputación on-chain</span>
+    <h2 style="font-size:1.5rem;">Ranking de <span class="accent">PYMEs</span></h2>
+    <p class="muted mb-0">FacturaFi no solo conecta una factura con un prestamista — construye la reputación pública de cada PYME para que la vean futuros inversionistas. Para subir en el ranking hay que emitir más facturas y pagarlas a tiempo: cada operación bien cumplida sube el score y la posición.</p>
+  </div>
+
+  <div class="table-wrap reveal" style="margin-bottom:40px;">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Empresa</th><th>Rubro</th><th>Score</th><th>Operaciones pagadas</th><th>Liquidez movilizada</th><th></th></tr>
+      </thead>
+      <tbody id="tabla-ranking"></tbody>
+    </table>
+  </div>
+
+  <div class="text-center reveal" style="max-width:640px; margin:0 auto 24px;">
+    <span class="eyebrow">Simulador en vivo</span>
+    <h2 style="font-size:1.5rem;">¿Cuánto ganarías <span class="accent">tú</span>?</h2>
+    <p class="muted mb-0">El retorno del prestamista es el otro lado de la misma fórmula que ve la PYME — a mayor riesgo del contrato, mayor prima para ti; a menor riesgo, menor prima pero más seguridad.</p>
+  </div>
+  <div class="calc reveal" style="margin-bottom:36px;">
+    <div class="calc-inputs">
+      <div class="calc-row">
+        <label>Monto a depositar <b id="rv-monto">USDC 5,000</b></label>
+        <input type="range" id="rin-monto" min="500" max="100000" step="500" value="5000">
+      </div>
+      <div class="calc-row">
+        <label>Plazo promedio de las facturas <b id="rv-dias">45 días</b></label>
+        <input type="range" id="rin-dias" min="15" max="180" step="5" value="45">
+      </div>
+      <div class="calc-row" style="margin-bottom:0;">
+        <label>Utilización del pool <b id="rv-util">50%</b></label>
+        <input type="range" id="rin-util" min="0" max="100" step="5" value="50">
+        <div class="hint">Se precarga con la utilización real del pool — muévela para explorar otros escenarios.</div>
+      </div>
+    </div>
+    <div class="calc-output">
+      <div class="faint" style="font-size:.78rem; text-transform:uppercase; letter-spacing:.06em;">Ganancia estimada en el plazo</div>
+      <div class="calc-highlight" id="rv-ganancia" style="color:var(--emerald);">USDC 0</div>
+      <div class="muted" style="font-size:.82rem; margin-bottom:18px;" id="rv-ganancia-sub">—</div>
+
+      <div class="calc-result-row"><span class="k">Retorno del período</span><span class="v" id="rv-retorno-periodo">—</span></div>
+      <div class="calc-result-row"><span class="k">Retorno anualizado (APY aprox.)</span><span class="v emerald" id="rv-apy">—</span></div>
+      <div class="calc-result-row total"><span class="k">Recibirías en total</span><span class="v" id="rv-total">—</span></div>
+      <div class="faint" style="font-size:.7rem; margin-top:10px;">Estimado según la composición actual del pool (score y riesgo promedio) — no es una tasa garantizada, cada factura real puede variar.</div>
+    </div>
+  </div>
+
+  <div class="flex-between" style="margin-bottom:14px;">
+    <div>
+      <h3 class="mb-0">Contratos tokenizados</h3>
+      <p class="muted mb-0" style="font-size:.82rem;">Así está compuesto el pool hoy — filtra por nivel de riesgo para ver dónde se está invirtiendo tu capital.</p>
+    </div>
+    <span class="faint" style="font-size:.8rem;" id="facturas-count">0</span>
+  </div>
+
+  <div class="composicion-bar" id="composicion-bar"></div>
+  <div class="composicion-legend" id="composicion-legend"></div>
+  <p class="faint" style="font-size:.76rem; margin-top:6px;">A mayor riesgo del contrato, mayor prima para el prestamista — a menor riesgo, menor prima pero más seguridad. Los contratos nuevos, sin historial, nacen en riesgo alto.</p>
+
+  <div class="tabs" id="tabs-riesgo" style="margin-top:18px;">
+    <button class="tab active" data-tier="todas">Todas</button>
+    <button class="tab" data-tier="bajo">Riesgo bajo</button>
+    <button class="tab" data-tier="medio">Riesgo medio</button>
+    <button class="tab" data-tier="alto">Riesgo alto</button>
+  </div>
+
+  <div class="table-wrap reveal">
+    <table>
+      <thead>
+        <tr><th>Token</th><th>Deudor</th><th>Monto</th><th>Plazo</th><th>Tasa</th><th>Riesgo</th><th>Estado</th><th>Vence</th><th>Acciones</th></tr>
+      </thead>
+      <tbody id="tabla-pool"></tbody>
+    </table>
+    <div class="empty-state" id="empty-pool" style="display:none;">
+      <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s7 8 7 13a7 7 0 0 1-14 0c0-5 7-13 7-13Z"/></svg></div>
+      <p>Todavía no hay facturas financiadas. Regístrate como PYME y tokeniza la primera.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: Mi Perfil (inversionista) ===== -->
+<div class="modal-overlay overlay-fullscreen" id="modal-perfil-inv">
+  <div class="modal fullscreen">
+    <div class="modal-head">
+      <h3>Mi perfil</h3>
+      <button class="modal-close" data-close="modal-perfil-inv">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-photo-row">
+        <div class="profile-photo" id="pi-foto-preview" style="background:var(--gold); color:var(--text);"><span id="pi-foto-iniciales">--</span></div>
+        <div class="profile-photo-actions">
+          <input type="file" id="pi-foto-input" accept="image/*" style="display:none;">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-pi-subir-foto">Subir foto</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-pi-quitar-foto">Quitar</button>
+          <div class="hint" style="margin-top:6px;">Se guarda solo en este navegador. JPG/PNG, se ajusta automáticamente.</div>
+        </div>
+      </div>
+
+      <div class="profile-readonly">
+        <div><span class="k">Nombre</span><span class="v" id="pi-nombre">—</span></div>
+        <div><span class="k">Miembro desde</span><span class="v" id="pi-fecha">—</span></div>
+        <div><span class="k">Saldo disponible</span><span class="v" id="pi-saldo" style="color:var(--emerald);">—</span></div>
+        <div><span class="k">Invertido hoy</span><span class="v" id="pi-invertido">—</span></div>
+      </div>
+
+      <div class="field" style="margin-top:18px;">
+        <label for="pi-email">Correo de contacto <span class="req">*</span></label>
+        <input type="email" id="pi-email" required>
+      </div>
+      <div class="field">
+        <label for="pi-telefono">Teléfono <span class="req">*</span></label>
+        <input type="tel" id="pi-telefono" pattern="[0-9+ ]{9,15}" title="Solo números, 9 a 15 dígitos" required>
+      </div>
+
+      <div class="divider"></div>
+      <h4 style="margin-bottom:4px;">Cuenta y seguridad</h4>
+      <p class="muted" style="font-size:.82rem; margin-bottom:14px;">Tu wallet firma tus compras de opciones y tus depósitos al pool.</p>
+      <div class="account-row">
+        <div>
+          <div class="cell-strong" style="font-size:.85rem;">Wallet conectada (MetaMask)</div>
+          <div class="faint" id="pi-wallet-estado" style="font-size:.78rem;">No conectada — usando la wallet del perfil</div>
+        </div>
+        <div class="flex gap-8">
+          <span id="pi-wallet-slot"></span>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-pi-usar-wallet">Usar esta wallet</button>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:10px;">Próximamente: conexión también con WalletConnect, Coinbase Wallet y otras billeteras digitales — por ahora, MetaMask.</div>
+
+      <div class="divider"></div>
+      <h4 style="margin-bottom:14px;">Mis contratos</h4>
+      <div id="pi-posiciones"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close="modal-perfil-inv">Cancelar</button>
+      <button class="btn btn-primary" id="btn-guardar-perfil-inv">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: Comprar opción ===== -->
+<div class="modal-overlay" id="modal-comprar">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Comprar esta opción</h3>
+      <button class="modal-close" data-close="modal-comprar">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="receipt" id="comprar-resumen"></div>
+      <div class="divider"></div>
+      <h4 style="margin-bottom:8px;">Cláusula legal</h4>
+      <p class="muted" style="font-size:.82rem; line-height:1.6;">Esta operación se rige por la Ley N° 29623. Al aceptar, adquieres el derecho proporcional sobre el retorno de esta factura negociable, sujeto a las capas de protección del protocolo (respaldo legal, retención parcial, score on-chain y fondo de garantía). Al confirmar, el monto se deposita a favor de la PYME y recibes un contrato firmable para imprimir.</p>
+      <div class="divider"></div>
+      <div class="field-row">
+        <div class="field">
+          <label for="comprar-monto">Monto a invertir</label>
+          <input type="number" id="comprar-monto" min="1" step="10">
+        </div>
+        <div class="field">
+          <label for="comprar-moneda">Moneda</label>
+          <select id="comprar-moneda">
+            <option value="USDC" selected>USDC</option>
+            <option value="USDT">USDT</option>
+            <option value="DAI">DAI</option>
+            <option value="PEN">PEN (Soles)</option>
+          </select>
+        </div>
+      </div>
+      <div class="hint">Tu saldo disponible: <b id="comprar-saldo-disp">—</b> · en esta demo se contabiliza como USDC equivalente.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close="modal-comprar">Cancelar</button>
+      <button class="btn btn-primary" id="btn-confirmar-compra">Aceptar y depositar a la PYME</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: Contrato imprimible (inversionista) ===== -->
+<div class="modal-overlay overlay-fullscreen" id="modal-contrato-inv">
+  <div class="modal fullscreen">
+    <div class="modal-head no-print">
+      <h3>Contrato de la opción</h3>
+      <div class="flex gap-8">
+        <button class="btn btn-ghost btn-sm" id="btn-limpiar-firma-inv">Limpiar firma</button>
+        <button class="btn btn-primary btn-sm" id="btn-imprimir-contrato-inv">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir
+        </button>
+        <button class="modal-close" data-close="modal-contrato-inv">✕</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="contract-doc" id="contract-doc-inv"><!-- render dinámico --></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: Perfil de empresa (ranking) ===== -->
+<div class="modal-overlay" id="modal-perfil-rank">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="rank-nombre">Empresa</h3>
+      <button class="modal-close" data-close="modal-perfil-rank">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-readonly" id="rank-datos"></div>
+      <div class="divider"></div>
+      <h4 style="margin-bottom:6px;">Sobre el negocio</h4>
+      <p class="muted" id="rank-pitch" style="font-size:.85rem; line-height:1.6;">—</p>
+      <div id="rank-contacto-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+<script src="js/pricing.js"></script>
+<script src="js/mockdb.js"></script>
+<script src="js/contract.config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/contract.js"></script>
+<script src="js/web3ui.js"></script>
+<script src="js/assistant.js"></script>
+<script src="js/pool.js"></script>
+</body>
+</html>

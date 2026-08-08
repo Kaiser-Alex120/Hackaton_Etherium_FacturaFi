@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FacturaFi — Factoring de facturas on-chain para PYMEs peruanas</title>
+<meta name="description" content="FacturaFi convierte facturas por cobrar de PYMEs peruanas en liquidez inmediata, on-chain, sin bancos.">
+<link rel="icon" type="image/jpeg" href="assets/mascota-facturafi.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Archivo:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Para PYMEs: liquidez sin bancos, en minutos</span>
+    <span class="gold">·</span>
+    <span>Para inversionistas: retorno respaldado por activos reales</span>
+    <span class="gold">·</span>
+    <span>Tecnolog&iacute;a on-chain, blockchain</span>
+    <span class="gold">·</span>
+    <span>Score on-chain transparente, sin sorpresas</span>
+    <span class="gold">·</span>
+    <span>Fondo de garant&iacute;a compartido</span>
+    <span class="gold">·</span>
+    <span>Contratos verificables en Ethereum</span>
+    <span class="gold">·</span>
+    <span>Para PYMEs: liquidez sin bancos, en minutos</span>
+    <span class="gold">·</span>
+    <span>Para inversionistas: retorno respaldado por activos reales</span>
+    <span class="gold">·</span>
+    <span>Tecnolog&iacute;a on-chain, blockchain</span>
+    <span class="gold">·</span>
+    <span>Score on-chain transparente, sin sorpresas</span>
+    <span class="gold">·</span>
+    <span>Fondo de garant&iacute;a compartido</span>
+    <span class="gold">·</span>
+    <span>Contratos verificables en Ethereum</span>
+  </div>
+</div>
+
+<nav class="navbar">
+  <a href="index.html" class="brand"><span class="brand-mark"><img src="assets/mascota-facturafi.jpg" alt="Mascota FacturaFi"></span> FacturaFi</a>
+  <div class="nav-links">
+    <a href="index.html#como-funciona">Cómo funciona</a>
+    <a href="index.html#colateral">Protección</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="pool.html">Prestamistas</a>
+  </div>
+  <div class="nav-actions">
+    <span id="wallet-slot"></span>
+    <a href="pool.html" class="btn btn-gold btn-sm">Soy prestamista</a>
+    <a href="registro.html" class="btn btn-primary btn-sm">
+      Entrar como PYME
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <video class="hero-bg-video" autoplay muted loop playsinline preload="auto" poster="assets/inversionista.jpg">
+    <source src="assets/hero-bg.mp4" type="video/mp4">
+  </video>
+  <div class="hero-bg-overlay"></div>
+  <div class="container">
+    <div class="hero-split">
+      <div>
+        <h1 class="hero-title">Tu factura por cobrar, <span class="accent">convertida en liquidez hoy</span>, no en 60 días.</h1>
+        <p class="hero-sub">FacturaFi tokeniza la factura de tu PYME y la financia al instante con un pool de prestamistas en stablecoins. Sin bancos, sin colateral tradicional, sin semanas de trámite.</p>
+        <div class="role-zone">
+          <div class="role-picker">
+            <a href="registro.html" class="role-card role-pyme">
+              <span class="role-logo"><img src="assets/mascota-facturafi.jpg" alt=""></span>
+              <span class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M15 3v4h4"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span>
+              <span class="role-body">
+                <span class="role-label">Para empresas</span>
+                <span class="role-title">Soy una PYME</span>
+                <span class="role-desc">Empiezas con score 0 y lo subes con cada pago a tiempo — sube tu factura y recibe liquidez hoy mismo</span>
+              </span>
+              <span class="role-arrow">→</span>
+            </a>
+            <a href="pool.html" class="role-card role-prestamista">
+              <span class="role-logo"><img src="assets/mascota-facturafi.jpg" alt=""></span>
+              <span class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 6"/><polyline points="14 6 21 6 21 13"/></svg></span>
+              <span class="role-body">
+                <span class="role-label">Para inversionistas</span>
+                <span class="role-title">Soy prestamista</span>
+                <span class="role-desc">Deposita stablecoins y gana retorno real</span>
+              </span>
+              <span class="role-arrow">→</span>
+            </a>
+          </div>
+        </div>
+        <div class="trust-row">
+          <span class="trust-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 12 12 22 4 12"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="12" x2="20" y2="12"/></svg> Contratos en Ethereum</span>
+          <span class="trust-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 6"/><polyline points="14 6 21 6 21 13"/></svg> Deposita y gana ~6.4% en 2 meses</span>
+          <span class="trust-chip featured"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z"/></svg> Tu score sube con cada pago · fondo de garantía</span>
+        </div>
+        <button type="button" class="score-link" id="btn-score-info">
+          ¿Quieres aprender más sobre tu score? Pregúntale al asistente
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <div class="hero-visual">
+        <div class="mock-card-back">
+          <div class="flex-between" style="margin-bottom:10px;">
+            <span class="badge badge-pagada" style="font-size:.62rem;">Pagada</span>
+            <div class="dots"><span></span><span></span><span></span></div>
+          </div>
+          <div class="faint" style="font-size:.68rem; margin-bottom:2px;">Textiles del Sur E.I.R.L.</div>
+          <div style="font-family:var(--font-display); font-size:1.15rem; font-weight:600;">S/ 6,500 <span class="faint" style="font-size:.78rem; font-weight:500;">· 45 días</span></div>
+        </div>
+        <div class="mock-card" id="mock-card">
+          <div class="mc-fade-target">
+            <div class="mc-head">
+              <span class="badge badge-financiada" id="mc-badge">Financiada</span>
+              <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="faint" style="font-size:.72rem; margin-bottom:2px;" id="mc-deudor">Textiles del Sur E.I.R.L.</div>
+            <div style="font-family:var(--font-display); font-size:1.6rem; font-weight:600; margin-bottom:14px;"><span id="mc-monto">S/ 5,000</span> <span class="faint" style="font-size:.9rem; font-weight:500;">· <span id="mc-dias">45</span> días</span></div>
+            <div class="receipt" style="margin-top:0;">
+              <div class="row"><span class="k">Tasa final</span><span class="v gold" id="mc-tasa">12.0%</span></div>
+              <div class="row"><span class="k">Score PYME</span><span class="v" id="mc-score">0 / 10</span></div>
+              <div class="row total"><span class="k">Liberado hoy</span><span class="v emerald" id="mc-liberado">S/ 4,046</span></div>
+            </div>
+            <div class="token-chip" style="margin-top:14px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg> <span id="mc-token">0x71fa3…c9e2</span></div>
+          </div>
+        </div>
+        <div class="mock-float f1"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Retención liberada · Capa 2</div>
+        <div class="mock-float f2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--emerald)"><polyline points="20 6 9 17 4 12"/></svg> Score +1 tras pago a tiempo</div>
+      </div>
+    </div>
+
+    <p class="hero-note" style="margin-top:26px;">Demo funcional · datos simulados on-chain para la hackathon</p>
+
+    <div class="stat-strip">
+      <div class="stat-cell">
+        <div class="stat-value gold">0 → 10</div>
+        <div class="stat-label">tu score on-chain: empiezas en cero y lo construyes con historial real</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value">60 → 0 días</div>
+        <div class="stat-label">de espera para tener liquidez disponible</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value emerald">1%</div>
+        <div class="stat-label">fee fijo de FacturaFi por operación — sin sorpresas, sin letra chica</div>
+      </div>
+    </div>
+
+    <div class="invest-banner reveal">
+      <span class="invest-banner-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z"/></svg>
+      </span>
+      <div class="invest-banner-text">
+        <h3>Mejora tu score y desbloquea la opción de buscar inversores</h3>
+        <p>Accede a una nueva comunidad de inversionistas — más allá de vender tu factura.</p>
+      </div>
+      <div class="invest-banner-side">
+        <div class="invest-banner-questions">
+          <span>¿Buscas liquidez?</span>
+          <span>¿Buscas inversores?</span>
+          <span>¿Buscas nuevas inversiones?</span>
+        </div>
+        <p class="invest-banner-tag">Aquí todo el mundo sale ganando.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= PROBLEMA ================= -->
+<section class="section-tight">
+  <div class="container">
+    <div class="grid grid-2 reveal" style="align-items:center; gap:48px;">
+      <div>
+        <span class="eyebrow">El problema</span>
+        <h2>Negocios sanos, sin caja para operar</h2>
+        <p>Una ferretería, un taller textil, una distribuidora: le venden a un cliente grande y ese cliente paga, sin duda, pero recién en 30, 60 o 90 días. Mientras tanto la PYME necesita comprar mercadería y pagar planilla — y no tiene esa plata, aunque en el papel el negocio es sano.</p>
+        <p>El factoring que resuelve esto existe en Perú desde 2010 (Ley N° 29623), pero hoy lo controlan bancos y factoring companies que solo atienden a empresas grandes con historial crediticio robusto. Las PYMEs —la mayoría de la economía peruana— quedan afuera por no tener colateral bancario tradicional.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom:16px;">La Factura Negociable (Ley N° 29623)</h4>
+        <ul style="display:flex; flex-direction:column; gap:14px;">
+          <li class="flex gap-12"><span style="color:var(--gold-ink); flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="muted">Título valor transferible por endoso — es la base legal del factoring.</span></li>
+          <li class="flex gap-12"><span style="color:var(--gold-ink); flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="muted">El deudor tiene 8 días hábiles para aceptarla o reclamar; si no dice nada, queda aceptada de forma irrevocable.</span></li>
+          <li class="flex gap-12"><span style="color:var(--gold-ink); flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="muted">Ningún acuerdo puede prohibir que la PYME la use para financiarse — es nulo de pleno derecho.</span></li>
+          <li class="flex gap-12"><span style="color:var(--gold-ink); flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="muted">Mala fe del deudor = indemnización legal, no solo la obligación de pago.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CÓMO FUNCIONA ================= -->
+<section class="section section-alt" id="como-funciona">
+  <div class="container">
+    <div class="text-center reveal" style="max-width:640px; margin:0 auto 44px;">
+      <span class="eyebrow">La solución · para la PYME</span>
+      <h2>Un protocolo, <span class="accent">cinco etapas</span></h2>
+      <p>La PYME sube su factura, la convertimos en un token único e inmutable, un pool en stablecoins la financia al instante, el smart contract reparte el retorno cuando el deudor paga, y con buen historial la PYME se abre a otros tipos de financiamiento.</p>
+    </div>
+    <div class="flow reveal">
+      <div class="flow-step">
+        <span class="ghost-num">1</span>
+        <div class="num">1</div>
+        <h4>Registro</h4>
+        <p>La PYME se registra con sus datos básicos. Nace con score 0 y lo construye con cada operación bien pagada.</p>
+      </div>
+      <div class="flow-step">
+        <span class="ghost-num">2</span>
+        <div class="num">2</div>
+        <h4>Factura → Token</h4>
+        <p>Sube monto, deudor y plazo. Se emite un token único e inmutable que representa el derecho de cobro.</p>
+      </div>
+      <div class="flow-step">
+        <span class="ghost-num">3</span>
+        <div class="num">3</div>
+        <h4>Smart Contract</h4>
+        <p>El SC calcula el pricing con score, monto, plazo y utilización del pool, y financia al instante.</p>
+      </div>
+      <div class="flow-step">
+        <span class="ghost-num">4</span>
+        <div class="num">4</div>
+        <h4>Devolución</h4>
+        <p>El deudor paga y el contrato reparte capital + interés automáticamente. El score sube o baja según el comportamiento.</p>
+      </div>
+      <div class="flow-step">
+        <span class="ghost-num">5</span>
+        <div class="num">5</div>
+        <h4>Buscar inversores</h4>
+        <p>Con score 4+ la PYME entra al ranking del pool y puede negociar directo con inversionistas otros tipos de financiamiento — capital, préstamo directo, alianzas — más allá de la venta de facturas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CÓMO FUNCIONA — PARA EL PRESTAMISTA ================= -->
+<section class="section" id="como-funciona-prestamista">
+  <div class="container">
+    <div class="reveal" style="display:flex; align-items:center; gap:40px; flex-wrap:wrap; margin-bottom:44px;">
+      <img src="assets/inversionista.jpg" alt="Inversionista revisando el marketplace de FacturaFi" style="width:200px; height:200px; object-fit:cover; border-radius:20px; box-shadow:var(--shadow-lg); flex-shrink:0;">
+      <div style="flex:1; min-width:280px; max-width:640px;">
+        <span class="eyebrow">La solución · para el inversionista</span>
+        <h2>Cuatro pasos para <span class="accent">invertir</span></h2>
+        <p class="mb-0">Del registro a la firma del contrato — así se ve el camino del prestamista dentro del protocolo.</p>
+      </div>
+    </div>
+    <div class="flow reveal">
+      <div class="flow-step">
+        <span class="ghost-num">1</span>
+        <div class="num">1</div>
+        <h4>Crear cuenta</h4>
+        <p>Te registras como prestamista y recibes un saldo simulado de bienvenida para explorar el marketplace de facturas tokenizadas.</p>
+      </div>
+      <div class="flow-step">
+        <span class="ghost-num">2</span>
+        <div class="num">2</div>
+        <h4>Buscar en el mercado</h4>
+        <p>Filtras por nivel de riesgo, revisas el ranking de PYMEs y comparas tasas y retornos estimados antes de decidir.</p>
+      </div>
+      <div class="flow-step">
+        <span class="ghost-num">3</span>
+        <div class="num">3</div>
+        <h4>Firmar los contratos</h4>
+        <p>Compras una opción específica o depositas al pool diversificado — cada compra genera un contrato imprimible y firmable.</p>
+      </div>
+      <div class="flow-step">
+        <span class="ghost-num">4</span>
+        <div class="num">4</div>
+        <h4>Buscar oportunidades</h4>
+        <p>Contactas directo a las PYMEs que buscan otros tipos de financiamiento — capital, préstamo directo, alianzas comerciales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROTECCIÓN (resumen — detalle vive en el chat) ================= -->
+<section class="section-tight" id="colateral">
+  <div class="container">
+    <div class="protection-band reveal">
+      <div class="protection-text">
+        <span class="eyebrow">¿Y si no pagan?</span>
+        <h3>Cuatro capas de <span class="accent">protección</span>, no confianza ciega</h3>
+        <p class="muted" style="margin:0;">Legal → retención → score on-chain → fondo de garantía. Cada una cubre lo que la anterior no alcanza.</p>
+      </div>
+      <div class="protection-side">
+        <div class="protection-chips">
+          <span class="layer-chip lc-1">Legal</span>
+          <span class="layer-chip lc-2">Retención ~7%</span>
+          <span class="layer-chip lc-3">Score on-chain</span>
+          <span class="layer-chip lc-4">Fondo de garantía</span>
+        </div>
+        <button class="btn btn-outline" id="btn-ask-protection" type="button">Pregúntale al asistente →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CALCULADORA DE PRICING ================= -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="text-center reveal" style="max-width:640px; margin:0 auto 40px;">
+      <span class="eyebrow">Simulador en vivo</span>
+      <h2>Así calcula el smart contract la tasa</h2>
+      <p>Plazo de la factura → score de la PYME → liquidez del pool en ese momento → una tasa final, ejecutada automáticamente.</p>
+    </div>
+
+    <div class="calc reveal">
+      <div class="calc-inputs">
+        <div class="calc-row">
+          <label>Monto de la factura <b id="v-monto">S/ 10,000</b></label>
+          <input type="range" id="in-monto" min="1000" max="50000" step="500" value="10000">
+        </div>
+        <div class="calc-row">
+          <label>Plazo <b id="v-dias">60 días</b></label>
+          <div class="field-row">
+            <div>
+              <label for="in-fecha-emision" style="display:block; font-size:.72rem; font-weight:500; color:var(--text-faint); margin-bottom:4px;">Fecha de emisión</label>
+              <input type="date" id="in-fecha-emision">
+            </div>
+            <div>
+              <label for="in-fecha-vencimiento" style="display:block; font-size:.72rem; font-weight:500; color:var(--text-faint); margin-bottom:4px;">Fecha de vencimiento</label>
+              <input type="date" id="in-fecha-vencimiento">
+            </div>
+          </div>
+        </div>
+        <div class="calc-row">
+          <label>Score de la PYME <b id="v-score">0 / 10</b></label>
+          <input type="range" id="in-score" min="0" max="10" step="1" value="0">
+          <div class="hint" style="margin-top:6px;">Todos arrancan en 0 — arrástralo para ver cómo mejora la tasa a medida que subes de categoría.</div>
+        </div>
+        <div class="calc-row" style="margin-bottom:0;">
+          <div class="risk-note">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z"/></svg>
+            Nosotros valoramos tu riesgo — no te descartamos, ajustamos la tasa según tu score.
+          </div>
+        </div>
+      </div>
+      <div class="calc-output">
+        <div class="flex-between" style="margin-bottom:14px;">
+          <span class="faint" style="font-size:.72rem;">Mostrar en</span>
+          <div class="seg" id="seg-moneda" style="max-width:280px; flex-wrap:wrap;">
+            <button data-v="PEN" class="active" title="Soles peruanos">S/</button>
+            <button data-v="USD" title="Dólares estadounidenses">$</button>
+            <button data-v="CNY" title="Yuanes chinos">¥</button>
+            <button data-v="EUR" title="Euros">€</button>
+            <button data-v="MXN" title="Pesos mexicanos">MX$</button>
+          </div>
+        </div>
+        <div class="faint" style="font-size:.78rem; text-transform:uppercase; letter-spacing:.06em;">La PYME recibe hoy</div>
+        <div class="calc-highlight" id="out-recibe">S/ 9,300</div>
+        <div class="muted" style="font-size:.82rem; margin-bottom:18px;" id="out-recibe-sub">antes de retención parcial (Capa 2)</div>
+
+        <div class="calc-result-row"><span class="k">Tasa final aplicada</span><span class="v" id="out-tasa">6.4%</span></div>
+        <div class="calc-result-row"><span class="k">— tasa base + plazo</span><span class="v" id="out-desc">—</span></div>
+        <div class="calc-result-row"><span class="k">— prima riesgo score</span><span class="v" id="out-prima-score">—</span></div>
+        <div class="calc-result-row total"><span class="k">Fee de originación (1%)</span><span class="v" id="out-fee">—</span></div>
+        <div class="calc-result-row"><span class="k">Retorno del prestamista</span><span class="v emerald" id="out-retorno">—</span></div>
+        <div class="faint" style="font-size:.7rem; margin-top:10px;" id="fx-nota">Tipo de cambio de referencia — no en vivo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MODELO DE NEGOCIO ================= -->
+<section class="section-tight">
+  <div class="container">
+    <div class="grid grid-3 reveal">
+      <div class="card">
+        <h4>1% fee de originación</h4>
+        <p style="font-size:.86rem;">El mismo modelo que ya usa la industria de factoring — solo que accesible para quien hoy queda excluido.</p>
+      </div>
+      <div class="card">
+        <h4>USDC, cualquier wallet</h4>
+        <p style="font-size:.86rem;">No inventamos infraestructura. USDC es compatible con cualquier wallet, incluidas apps con tarjeta como Lemon Cash. La PYME nunca necesita saber que está usando blockchain.</p>
+      </div>
+      <div class="card">
+        <h4>Perú primero, LatAm después</h4>
+        <p style="font-size:.86rem;">Empezamos donde conocemos el marco legal. La exclusión de PYMEs del factoring es un problema regional — FacturaFi es el primer paso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section-tight section-alt">
+  <div class="container-narrow">
+    <div class="text-center reveal" style="margin-bottom:36px;">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2>Preguntas <span class="accent">frecuentes</span></h2>
+    </div>
+    <div class="reveal">
+      <details class="faq-item" open>
+        <summary>¿Qué pasa si el deudor no paga?</summary>
+        <p class="muted">Cuatro capas absorben esa pérdida en orden: primero el respaldo legal de la Factura Negociable (Ley N° 29623, con indemnización si hay mala fe), luego la retención parcial (~7%), luego el score on-chain de la PYME, y por último un fondo de garantía compartido inspirado en FAE-MYPE.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Necesito historial bancario para empezar?</summary>
+        <p class="muted">No. Todo usuario nace con score 0 y lo construye con cada factura pagada a tiempo. La escala 0-10 tiene 3 niveles: 0-3 riesgo alto, 4-7 riesgo medio, 8-10 riesgo bajo — a más score, mejor tasa y más % del adelanto liberado. Es colateral "blando", basado en comportamiento verificable on-chain, no en historial bancario tradicional.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿En qué estándar se tokeniza la factura?</summary>
+        <p class="muted">ERC-721 para el MVP — cada factura es un token único e indivisible. ERC-3525 (semi-fungible) queda documentado como evolución natural para fraccionar una factura entre varios prestamistas.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cómo se protege el prestamista frente a un exploit?</summary>
+        <p class="muted">El contrato sigue el patrón Checks-Effects-Interactions en toda función que mueve fondos, para eliminar la clase de vulnerabilidad de reentrancy — el error más común y más penalizado en contratos de hackathon.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué son USDC y Ethereum?</summary>
+        <p class="muted">USDC es una stablecoin: cada token equivale a 1 dólar, respaldado 1:1 por reservas reales — como tener dólares digitales que se mueven en segundos, sin banco de por medio y sin la volatilidad de otras criptomonedas. Ethereum es la red blockchain pública donde vive el smart contract de FacturaFi: un registro compartido y verificable por cualquiera, que ninguna empresa controla de forma unilateral. No inventamos infraestructura nueva — usamos la que ya mueve miles de millones de dólares todos los días.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cómo cobra la PYME sin saber que usa blockchain?</summary>
+        <p class="muted">El adelanto llega en USDC, un estándar ERC-20 compatible con cualquier wallet — incluidas apps con tarjeta como Lemon Cash. FacturaFi no gestiona la wallet de nadie: solo necesita una dirección válida para transferir.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA FINAL ================= -->
+<section class="section-tight">
+  <div class="container">
+    <div class="card reveal" style="border:1px solid var(--gold); text-align:center; padding:56px 24px; position:relative; overflow:hidden;">
+      <div style="position:absolute; inset:0; background:radial-gradient(600px 300px at 50% 0%, rgba(238,203,31,.12), transparent 70%); pointer-events:none;"></div>
+      <div style="position:relative;">
+        <span class="eyebrow">Demo en vivo</span>
+        <h2 style="margin-bottom:8px; font-family:var(--font-display);">Prueba el flujo completo</h2>
+        <p class="muted" style="max-width:480px; margin:0 auto 24px;">Regístrate como PYME demo, sube una factura y observa la tokenización, el pricing y el reparto automático en acción.</p>
+        <a href="registro.html" class="btn btn-primary">Empezar demo →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <a href="index.html" class="brand"><span class="brand-mark"><img src="assets/mascota-facturafi.jpg" alt="Mascota FacturaFi"></span> FacturaFi</a>
+        <p class="footer-tag">Factoring on-chain para PYMEs peruanas — liquidez inmediata, sin bancos, sin colateral tradicional.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#como-funciona">Cómo funciona</a>
+        <a href="registro.html">Soy PYME</a>
+        <a href="pool.html">Prestamistas</a>
+        <a href="https://linktr.ee/alexsibu09" target="_blank" rel="noopener">Contacto ↗</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="hackathon-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 12 12 22 4 12"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+        Construido para Ethereum Hackathon 2026
+      </span>
+      <span class="faint">Track RWA / DeFi / Stablecoins</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+<script src="js/pricing.js"></script>
+<script src="js/mockdb.js"></script>
+<script src="js/contract.config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/contract.js"></script>
+<script src="js/web3ui.js"></script>
+<script src="js/assistant.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+* CREA UN ARCHIVO useSmartContract.js y COPIA ESTE CONTENIDO
+
+import { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+import contratoABI from './abi.json';
+
+// Reemplaza esto con la dirección de tu contrato desplegado
+const CONTRACT_ADDRESS = "0xTuDireccionDeContratoAqui";
+
+export function useSmartContract() {
+  const [account, setAccount] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [contract, setContract] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Inicializar proveedor e intentar recuperar cuenta si ya estaba conectada
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.ethereum) {
+      const initProvider = new ethers.BrowserProvider(window.ethereum);
+      setProvider(initProvider);
+
+      window.ethereum.request({ method: 'eth_accounts' })
+        .then((accounts) => {
+          if (accounts.length > 0) setAccount(accounts[0]);
+        });
+
+      // Escuchar cambios de cuenta en MetaMask
+      window.ethereum.on('accountsChanged', (accounts) => {
+        setAccount(accounts.length > 0 ? accounts[0] : null);
+      });
+    }
+  }, []);
+
+  // Crear la instancia del contrato (detecta si requiere firma o solo lectura)
+  useEffect(() => {
+    const getContractInstance = async () => {
+      if (!provider) return;
+      try {
+        if (account) {
+          // Si hay cuenta, usamos el Signer (Firmante) para permitir escrituras
+          const signer = await provider.getSigner();
+          const contractWithSigner = new ethers.Contract(CONTRACT_ADDRESS, contratoABI, signer);
+          setContract(contractWithSigner);
+        } else {
+          // Si no hay cuenta, usamos solo el Provider (Lectura)
+          const contractReadOnly = new ethers.Contract(CONTRACT_ADDRESS, contratoABI, provider);
+          setContract(contractReadOnly);
+        }
+      } catch (error) {
+        console.error("Error al instanciar el contrato:", error);
+      }
+    };
+    getContractInstance();
+  }, [provider, account]);
+
+  // Conectar Billetera
+  const connectWallet = async () => {
+    if (!window.ethereum) return alert("Instala MetaMask");
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      setAccount(accounts[0]);
+    } catch (error) {
+      console.error("Error conectando wallet:", error);
+    }
+  };
+
+  // --- FUNCIONES DE ESCRITURA (REQUIEREN GAS) ---
+
+  const registrarUsuario = async (wallet, codigo, nombre, dni) => {
+    if (!contract || !account) throw new Error("Wallet no conectada");
+    setLoading(true);
+    try {
+      const tx = await contract.registrarUsuario(wallet, codigo, nombre, dni);
+      await tx.wait(); // Esperar confirmación del bloque
+      return tx;
+    } finally { setLoading(false); }
+  };
+
+  const registrarContrato = async (walletUsuario, cuotas, porcentaje, tiempo, desc, obs, prestamo, colateral) => {
+    if (!contract || !account) throw new Error("Wallet no conectada");
+    setLoading(true);
+    try {
+      // Convertir valores Ether/Stablecoin a Wei (BigInt) para blockchain
+      const prestamoWei = ethers.parseEther(prestamo.toString());
+      const colateralWei = ethers.parseEther(colateral.toString());
+
+      const tx = await contract.registrarContrato(
+        walletUsuario, cuotas, porcentaje, tiempo, desc, obs, prestamoWei, colateralWei
+      );
+      await tx.wait();
+      return tx;
+    } finally { setLoading(false); }
+  };
+
+  const registrarFactura = async (contratoId, codigo, desc, obs, monto) => {
+    if (!contract || !account) throw new Error("Wallet no conectada");
+    setLoading(true);
+    try {
+      const montoWei = ethers.parseEther(monto.toString());
+      const tx = await contract.registrarFactura(contratoId, codigo, desc, obs, montoWei);
+      await tx.wait();
+      return tx;
+    } finally { setLoading(false); }
+  };
+
+  // --- FUNCIONES DE LECTURA (GRATUITAS) ---
+
+  const obtenerContadores = async () => {
+    if (!contract) return { contratos: 0, facturas: 0 };
+    try {
+      const cContratos = await contract.contadorContratos();
+      const cFacturas = await contract.contadorFacturas();
+      return { 
+        contratos: Number(cContratos), 
+        facturas: Number(cFacturas) 
+      };
+    } catch (error) { console.error(error); return { contratos: 0, facturas: 0 }; }
+  };
+
+  const obtenerInformacionUsuario = async (wallet) => {
+    if (!contract) return null;
+    try {
+      const res = await contract.obtenerInformacionUsuario(wallet);
+      return { codigo: res[0], nombre: res[1], dni: res[2] };
+    } catch (error) { console.error("Usuario no encontrado", error); return null; }
+  };
+
+  const obtenerInformacionContrato = async (id) => {
+    if (!contract) return null;
+    try {
+      const res = await contract.obtenerInformacionContrato(id);
+      return {
+        walletUsuario: res[0],
+        cuotas: Number(res[1]),
+        pagadas: Number(res[2]),
+        porcentajeMensual: Number(res[3]) / 100, // Convierte 550 a 5.5%
+        tiempoDePago: Number(res[4]),
+        descripcion: res[5],
+        observaciones: res[6],
+        valorPrestamo: ethers.formatEther(res[7]), // Convierte Wei a String Ether
+        valorColateral: ethers.formatEther(res[8]),
+        listaFacturasPagadas: res[9].map(id => Number(id))
+      };
+    } catch (error) { console.error("Contrato no encontrado", error); return null; }
+  };
+
+  const obtenerInformacionFactura = async (id) => {
+    if (!contract) return null;
+    try {
+      const res = await contract.obtenerInformacionFactura(id);
+      return {
+        codigo: res[0],
+        fechaEmision: new Date(Number(res[1]) * 1000).toLocaleString(), // Unix timestamp a Fecha Legible
+        descripcion: res[2],
+        observaciones: res[3],
+        monto: ethers.formatEther(res[4]),
+        contratoId: Number(res[5])
+      };
+    } catch (error) { console.error("Factura no encontrada", error); return null; }
+  };
+
+  return {
+    account,
+    loading,
+    connectWallet,
+    registrarUsuario,
+    registrarContrato,
+    registrarFactura,
+    obtenerContadores,
+    obtenerInformacionUsuario,
+    obtenerInformacionContrato,
+    obtenerInformacionFactura
+  };
+}

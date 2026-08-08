@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de prestamista — FacturaFi</title>
+<link rel="icon" type="image/jpeg" href="assets/mascota-facturafi.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Archivo:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="brand"><span class="brand-mark"><img src="assets/mascota-facturafi.jpg" alt="Mascota FacturaFi"></span> FacturaFi</a>
+  <div class="nav-links">
+    <a href="index.html#como-funciona">Cómo funciona</a>
+    <a href="registro.html">Soy PYME</a>
+  </div>
+  <div class="nav-actions">
+    <span id="wallet-slot"></span>
+    <a href="index.html" class="btn btn-ghost btn-sm">Volver</a>
+  </div>
+</nav>
+
+<section class="section-tight">
+  <div class="container form-shell">
+    <span class="eyebrow"><span class="dot"></span> Para inversionistas</span>
+    <h2>Regístrate como prestamista</h2>
+    <p class="mb-0" style="margin-bottom:30px;">Al registrarte simulamos un <b style="color:var(--text)">depósito de bienvenida de 10,000 USDC</b> para que puedas explorar el marketplace y comprar opciones de inmediato.</p>
+
+    <div class="card reveal">
+      <div class="flex-between" style="margin-bottom:20px;">
+        <h4 class="mb-0">Tu perfil</h4>
+        <span class="faint" style="font-size:.72rem;"><span class="req">*</span> campos obligatorios</span>
+      </div>
+      <div class="form-warning" id="form-warning" style="display:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Tus datos no se registraron correctamente — revisa los campos marcados e inténtalo de nuevo.</span>
+      </div>
+      <form id="form-registro">
+        <div class="field">
+          <label for="nombre">Nombre completo <span class="req">*</span></label>
+          <input type="text" id="nombre" placeholder="Alexandra Ríos" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="email">Correo de contacto <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="tu@correo.com" required>
+          </div>
+          <div class="field">
+            <label for="telefono">Teléfono <span class="req">*</span></label>
+            <input type="tel" id="telefono" placeholder="+51 987 654 321" pattern="[0-9+ ]{9,15}" title="Solo números, 9 a 15 dígitos" required>
+          </div>
+        </div>
+
+        <div class="hint" style="margin-bottom:20px;">Tu wallet se asocia después, desde tu perfil — así el registro es más rápido.</div>
+
+        <details class="faq-item" style="border:1px solid var(--border); border-radius:12px; padding:0 14px; margin-bottom:6px;">
+          <summary style="font-size:.85rem;">Términos y condiciones — léelos antes de continuar</summary>
+          <div style="font-size:.82rem; color:var(--text-muted); padding-bottom:14px; line-height:1.65;">
+            <p style="margin-bottom:10px;"><strong style="color:var(--text);">Quiénes somos:</strong> FacturaFi es un proyecto construido para una hackathon (track RWA / DeFi / Stablecoins). Esta demo simula el protocolo completo en tu navegador — todavía no es un producto financiero regulado.</p>
+            <p style="margin-bottom:10px;"><strong style="color:var(--text);">Tu saldo:</strong> los 10,000 USDC de bienvenida son ficticios, solo para esta demo — no representan dinero real.</p>
+            <p style="margin-bottom:10px;"><strong style="color:var(--text);">Tu retorno:</strong> varía según la utilización del pool y el plazo de las facturas — pruébalo en la calculadora de retorno antes de invertir.</p>
+            <p style="margin:0;"><strong style="color:var(--text);">Tus datos:</strong> en esta demo se guardan solo en tu navegador (localStorage) — no se envían a ningún servidor externo.</p>
+          </div>
+        </details>
+
+        <div class="terms-row">
+          <input type="checkbox" id="acepto-terminos" required>
+          <label for="acepto-terminos">He leído y acepto los <strong>términos y condiciones</strong> de FacturaFi. <span class="req">*</span></label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
+          Crear cuenta y entrar al marketplace
+        </button>
+      </form>
+    </div>
+
+    <p class="faint text-center" style="margin-top:18px; font-size:.78rem;">Demo de hackathon — los datos se guardan solo en este navegador (localStorage), no se envían a ningún servidor.</p>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+<script src="js/pricing.js"></script>
+<script src="js/mockdb.js"></script>
+<script src="js/contract.config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/contract.js"></script>
+<script src="js/web3ui.js"></script>
+<script src="js/assistant.js"></script>
+<script src="js/registro-inversionista.js"></script>
+</body>
+</html>

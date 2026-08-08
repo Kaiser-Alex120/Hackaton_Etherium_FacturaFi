@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard PYME — FacturaFi</title>
+<link rel="icon" type="image/jpeg" href="assets/mascota-facturafi.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Archivo:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="brand"><span class="brand-mark"><img src="assets/mascota-facturafi.jpg" alt="Mascota FacturaFi"></span> FacturaFi</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Inicio</a>
+    <a href="dashboard.html" style="color:var(--text);">Dashboard</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-ghost btn-sm" id="btn-como-usar" data-kb="como-usar-pyme">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2 2-2 3.5"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      ¿Cómo uso esto?
+    </button>
+    <span id="wallet-slot"></span>
+    <button class="btn btn-ghost btn-sm" id="btn-logout">Cerrar sesión</button>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="app-header">
+    <button class="identity identity-btn" id="btn-perfil" type="button">
+      <div class="avatar" id="avatar">--</div>
+      <div>
+        <div class="name" id="pyme-nombre">Cargando…</div>
+        <div class="sub" id="pyme-sub">—</div>
+      </div>
+      <span class="identity-edit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+        Mi perfil
+      </span>
+    </button>
+    <button class="btn btn-primary" id="btn-nueva-factura">+ Nueva factura</button>
+  </div>
+
+  <div class="onchain-card reveal" style="display:flex; cursor:pointer;" id="banner-ranking">
+    <div class="onchain-dot" style="background:var(--gold);"></div>
+    <div>
+      <div class="cell-strong" style="font-size:.85rem;">Apareces en el ranking de PYMEs que ven los inversionistas</div>
+      <div class="faint" style="font-size:.78rem;">Sube en el ranking emitiendo más facturas y pagándolas a tiempo — mejor score, más exposición. <b style="color:var(--gold-ink);">Completa tu pitch en tu perfil →</b></div>
+    </div>
+  </div>
+
+  <div class="kpi-row reveal">
+    <div class="kpi">
+      <div class="label">
+        <span>Score on-chain</span>
+        <button type="button" id="btn-score-ayuda" style="background:none; border:none; padding:0; color:var(--gold-ink); font-weight:700; font-size:.72rem; cursor:pointer; text-transform:none;">¿Cómo subo?</button>
+      </div>
+      <div id="kpi-score">—</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Liquidez recibida total</div>
+      <div class="value" id="kpi-liquidez">S/ 0</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Facturas activas</div>
+      <div class="value" id="kpi-activas">0</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Operaciones completadas</div>
+      <div class="value" id="kpi-ops">0</div>
+    </div>
+  </div>
+
+  <div class="flex-between" style="margin-bottom:14px;">
+    <h3 class="mb-0">Mis facturas</h3>
+    <span class="faint" style="font-size:.8rem;" id="facturas-count">0 facturas</span>
+  </div>
+
+  <div class="table-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Factura / Token</th>
+          <th>Deudor</th>
+          <th>Monto</th>
+          <th>Plazo</th>
+          <th>Estado</th>
+          <th>Tasa</th>
+          <th>Recibido</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tabla-facturas"></tbody>
+    </table>
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M15 3v4h4"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
+      <p>Todavía no subiste ninguna factura.</p>
+      <button class="btn btn-primary btn-sm" id="btn-empty-nueva">Subir la primera factura</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== Modal: nueva factura ===== -->
+<div class="modal-overlay" id="modal-nueva">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Nueva factura — Etapa 2</h3>
+      <button class="modal-close" data-close="modal-nueva">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="form-factura">
+        <div class="field">
+          <label for="f-deudor">Empresa deudora (quien paga la factura)</label>
+          <input type="text" id="f-deudor" placeholder="Comercial Andina S.A.C." required>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-monto">Monto de la factura</label>
+            <div class="flex gap-8">
+              <input type="number" id="f-monto" min="500" step="100" value="10000" required style="flex:1; min-width:0;">
+              <select id="f-moneda" style="flex:0 0 100px;">
+                <option value="PEN" selected>PEN</option>
+                <option value="USDC">USDC</option>
+                <option value="USDT">USDT</option>
+                <option value="DAI">DAI</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-vencimiento">Fecha de vencimiento</label>
+            <input type="date" id="f-vencimiento" required>
+            <div class="hint">Equivale a <b id="f-dias-total" style="color:var(--text);">60</b> días desde hoy para el cálculo.</div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="flex-between">
+            <label style="margin-bottom:0;">La tasa se ajusta según tu score — mientras más alto, mejor precio.</label>
+            <button type="button" id="btn-score-ayuda-factura" class="btn btn-ghost btn-sm" style="white-space:nowrap;">¿Cómo mejoro mi score?</button>
+          </div>
+        </div>
+
+        <div class="receipt" id="preview-receipt"></div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close="modal-nueva">Cancelar</button>
+      <button class="btn btn-primary" id="btn-crear-factura">Registrar factura</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: Mi Perfil ===== -->
+<div class="modal-overlay overlay-fullscreen" id="modal-perfil">
+  <div class="modal fullscreen">
+    <div class="modal-head">
+      <h3>Mi perfil</h3>
+      <button class="modal-close" data-close="modal-perfil">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-photo-row">
+        <div class="profile-photo" id="perfil-foto-preview"><span id="perfil-foto-iniciales">--</span></div>
+        <div class="profile-photo-actions">
+          <input type="file" id="perfil-foto-input" accept="image/*" style="display:none;">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-subir-foto">Subir foto</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-quitar-foto">Quitar</button>
+          <div class="hint" style="margin-top:6px;">Se guarda solo en este navegador. JPG/PNG, se ajusta automáticamente.</div>
+        </div>
+      </div>
+
+      <div class="profile-readonly">
+        <div><span class="k">Empresa</span><span class="v" id="perfil-nombre">—</span></div>
+        <div><span class="k">RUC</span><span class="v" id="perfil-ruc">—</span></div>
+        <div><span class="k">Rubro</span><span class="v" id="perfil-rubro">—</span></div>
+        <div><span class="k">Miembro desde</span><span class="v" id="perfil-fecha">—</span></div>
+      </div>
+
+      <div id="perfil-gauge" style="margin:18px 0;"></div>
+
+      <div class="field">
+        <label for="perfil-email">Correo de contacto <span class="req">*</span></label>
+        <input type="email" id="perfil-email" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="perfil-telefono">Teléfono <span class="req">*</span></label>
+          <input type="tel" id="perfil-telefono" pattern="[0-9+ ]{9,15}" title="Solo números, 9 a 15 dígitos" required>
+        </div>
+        <div class="field">
+          <label for="perfil-web">Link de tu MYPE</label>
+          <input type="url" id="perfil-web" placeholder="https://tuempresa.pe">
+        </div>
+      </div>
+      <div class="field">
+        <label for="perfil-wallet">Wallet asociada</label>
+        <input type="text" id="perfil-wallet" readonly>
+      </div>
+
+      <div class="divider"></div>
+      <h4 style="margin-bottom:14px;">Historial</h4>
+      <div class="grid grid-3" style="gap:10px;">
+        <div class="kpi" style="padding:12px 14px;"><div class="label">Operaciones</div><div class="value" id="perfil-ops" style="font-size:1.1rem;">0</div></div>
+        <div class="kpi" style="padding:12px 14px;"><div class="label">Liquidez recibida</div><div class="value" id="perfil-liquidez" style="font-size:1.1rem;">S/ 0</div></div>
+        <div class="kpi" style="padding:12px 14px;"><div class="label">Facturas activas</div><div class="value" id="perfil-activas" style="font-size:1.1rem;">0</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <h4 style="margin-bottom:4px;">Exposición ante inversionistas</h4>
+      <p class="muted" style="font-size:.82rem; margin-bottom:14px;">FacturaFi no solo te conecta con un prestamista puntual — te muestra en el <b style="color:var(--text);">ranking público de PYMEs</b> que ven los inversionistas en el pool. Cuéntales de tu negocio para que te contacten con ideas, alianzas o futuras inversiones.</p>
+      <div class="field">
+        <label for="perfil-pitch">Sobre tu negocio <span class="faint" style="font-weight:400;">(visible en el ranking)</span></label>
+        <textarea id="perfil-pitch" rows="4" maxlength="400" placeholder="¿A qué se dedica tu empresa? ¿Qué necesitas para crecer?"></textarea>
+      </div>
+
+      <label class="switch-row">
+        <span>Marcar como "Buscando inversores" — destacada en el ranking</span>
+        <span class="switch"><input type="checkbox" id="perfil-busca-inversion"><span class="switch-track"></span></span>
+      </label>
+
+      <div class="field" id="wrap-monto-buscado">
+        <label for="perfil-monto-buscado">Monto que buscas captar <span class="faint" style="font-weight:400;">(para negociar directo con el inversionista)</span></label>
+        <div class="input-suffix">
+          <input type="number" id="perfil-monto-buscado" min="0" step="500" placeholder="20000">
+          <span>S/</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tipos de financiamiento que buscas <span class="faint" style="font-weight:400;">(se muestran con score 4+)</span></label>
+        <div class="flex gap-8" id="fin-tipos" style="flex-wrap:wrap; margin-top:8px;">
+          <label class="fin-chip"><input type="checkbox" value="Venta de facturas"> Venta de facturas</label>
+          <label class="fin-chip"><input type="checkbox" value="Inversión de capital (equity)"> Inversión de capital (equity)</label>
+          <label class="fin-chip"><input type="checkbox" value="Préstamo directo a plazo"> Préstamo directo a plazo</label>
+          <label class="fin-chip"><input type="checkbox" value="Alianza comercial / distribución"> Alianza comercial / distribución</label>
+          <label class="fin-chip"><input type="checkbox" value="Otro"> Otro</label>
+        </div>
+        <div class="hint" style="margin-top:8px;">Mientras más alto tu score, más tipos de financiamiento puedes explorar — no solo la venta de tus facturas. Con score 4+ (riesgo medio o bajo) tu perfil aparece en el ranking del pool con estas opciones visibles para los inversionistas.</div>
+      </div>
+
+      <div class="divider"></div>
+      <h4 style="margin-bottom:4px;">Cuenta y seguridad</h4>
+      <p class="muted" style="font-size:.82rem; margin-bottom:14px;">Tu wallet es la que autoriza las operaciones on-chain — puedes conectar o cambiar la que uses para firmar.</p>
+      <div class="account-row">
+        <div>
+          <div class="cell-strong" style="font-size:.85rem;">Wallet conectada (MetaMask)</div>
+          <div class="faint" id="perfil-wallet-estado" style="font-size:.78rem;">No conectada — usando la wallet del perfil</div>
+        </div>
+        <div class="flex gap-8">
+          <span id="perfil-wallet-slot"></span>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-usar-wallet-conectada">Usar esta wallet</button>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:10px;">Próximamente: conexión también con WalletConnect, Coinbase Wallet y otras billeteras digitales — por ahora, MetaMask.</div>
+
+      <div class="divider"></div>
+      <h4 style="margin-bottom:14px;">Preferencias</h4>
+      <label class="switch-row">
+        <span>Avisarme cuando cambie mi score</span>
+        <span class="switch"><input type="checkbox" id="pref-score" checked><span class="switch-track"></span></span>
+      </label>
+      <label class="switch-row">
+        <span>Avisarme cuando una factura sea pagada</span>
+        <span class="switch"><input type="checkbox" id="pref-pagos" checked><span class="switch-track"></span></span>
+      </label>
+      <p class="faint" style="font-size:.74rem; margin-top:8px;">Se guarda solo en este navegador — el envío real de notificaciones depende del backend.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close="modal-perfil">Cancelar</button>
+      <button class="btn btn-primary" id="btn-guardar-perfil">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: Contrato imprimible ===== -->
+<div class="modal-overlay overlay-fullscreen" id="modal-contrato">
+  <div class="modal fullscreen">
+    <div class="modal-head no-print">
+      <h3>Contrato de la operación</h3>
+      <div class="flex gap-8">
+        <button class="btn btn-ghost btn-sm" id="btn-limpiar-firma">Limpiar firma</button>
+        <button class="btn btn-primary btn-sm" id="btn-imprimir-contrato">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir
+        </button>
+        <button class="modal-close" data-close="modal-contrato">✕</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="contract-doc" id="contract-doc"><!-- render dinámico --></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Modal: detalle / ciclo de vida ===== -->
+<div class="modal-overlay" id="modal-detalle">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="det-titulo">Factura</h3>
+      <button class="modal-close" data-close="modal-detalle">✕</button>
+    </div>
+    <div class="modal-body" id="det-body"><!-- render dinámico --></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+<script src="js/pricing.js"></script>
+<script src="js/mockdb.js"></script>
+<script src="js/contract.config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/web3.js"></script>
+<script src="js/contract.js"></script>
+<script src="js/web3ui.js"></script>
+<script src="js/assistant.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

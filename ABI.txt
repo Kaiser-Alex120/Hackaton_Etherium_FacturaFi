@@ -1,0 +1,10 @@
+[
+  "function contadorContratos() view returns (uint256)",
+  "function contadorFacturas() view returns (uint256)",
+  "function registrarUsuario(address _wallet, string _codigo, string _nombre, string _dni) public",
+  "function registrarContrato(address _walletUsuario, uint256 _cuotas, uint256 _porcentajeMensual, uint256 _tiempoDePago, string _descripcion, string _observaciones, uint256 _valorPrestamo, uint256 _valorColateral) public",
+  "function registrarFactura(uint256 _contratoId, string _codigo, string _descripcion, string _observaciones, uint256 _monto) public",
+  "function obtenerInformacionUsuario(address _wallet) view returns (string codigo, string nombre, string dni)",
+  "function obtenerInformacionContrato(uint256 _contratoId) view returns (address walletUsuario, uint256 cuotas, uint256 pagadas, uint256 porcentajeMensual, uint256 tiempoDePago, string descripcion, string observaciones, uint256 valorPrestamo, uint256 valorColateral, uint256[] listaFacturasPagadas)",
+  "function obtenerInformacionFactura(uint256 _facturaId) view returns (string codigo, uint256 fechaEmision, string descripcion, string observaciones, uint256 monto, uint256 contratoId)"
+]

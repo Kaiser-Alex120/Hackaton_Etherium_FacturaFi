@@ -1,0 +1,14 @@
+{
+  "name": "facturafi-whatsapp-bot",
+  "version": "1.0.0",
+  "description": "Bot de notificaciones por WhatsApp para FacturaFi, usando open-wa",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@open-wa/wa-automate": "^4.60.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

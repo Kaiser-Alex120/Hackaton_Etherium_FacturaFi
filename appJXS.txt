@@ -1,0 +1,122 @@
+import React, { useState, useEffect } from 'react';
+import { useSmartContract } from './useSmartContract';
+
+export default function App() {
+  const {
+    account, loading, connectWallet,
+    registrarUsuario, registrarContrato, registrarFactura,
+    obtenerContadores, obtenerInformacionUsuario, obtenerInformacionContrato, obtenerInformacionFactura
+  } = useSmartContract();
+
+  // Estados locales para formularios e información mostrada
+  const [stats, setStats] = useState({ contratos: 0, facturas: 0 });
+  const [busqueda, setBusqueda] = useState({ wallet: '', contratoId: '', facturaId: '' });
+  const [resultado, setResultado] = useState({ usuario: null, contrato: null, factura: null });
+
+  // Cargar contadores globales al iniciar y cuando cambia la cuenta
+  useEffect(() => {
+    obtenerContadores().then(res => setStats(res));
+  }, [account, loading]);
+
+  // Manejador genérico para operaciones de escritura
+  const handleRegistrarUsuario = async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    try {
+      await registrarUsuario(fd.get('wallet'), fd.get('codigo'), fd.get('nombre'), fd.get('dni'));
+      alert("Usuario registrado con éxito en la Blockchain");
+      e.target.reset();
+    } catch (err) { alert("Error: " + err.message); }
+  };
+
+  const handleBuscarUsuario = async () => {
+    const data = await obtenerInformacionUsuario(busqueda.wallet);
+    setResultado(prev => ({ ...prev, usuario: data }));
+  };
+
+  const handleBuscarContrato = async () => {
+    const data = await obtenerInformacionContrato(busqueda.contratoId);
+    setResultado(prev => ({ ...prev, contrato: data }));
+  };
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+      <h1>Sistema de Préstamos y Facturas Web3</h1>
+      
+      {/* 1. SECCIÓN DE CONEXIÓN */}
+      <div style={{ marginBottom: '20px' }}>
+        {account ? (
+          <p style={{ color: 'green' }}>🟢 Wallet Conectada: <strong>{account}</strong></p>
+        ) : (
+          <button onClick={connectWallet} style={{ padding: '10px 20px', fontSize: '16px' }}>
+            Conectar MetaMask
+          </button>
+        )}
+        <p>Total Contratos: {stats.contratos} | Total Facturas: {stats.facturas}</p>
+      </div>
+
+      {loading && <h3 style={{ color: 'orange' }}>⏳ Procesando transacción en la Blockchain...</h3>}
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
+        
+        {/* FORMULARIOS DE ESCRITURA */}
+        <div>
+          <h2>✍️ Registrar Datos (Escritura)</h2>
+          
+          {/* Formulario Usuario */}
+          <form onSubmit={handleRegistrarUsuario} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
+            <h3>Registrar Usuario</h3>
+            <input name="wallet" placeholder="Dirección Wallet (0x...)" required /><br/><br/>
+            <input name="codigo" placeholder="Código de Usuario" required /><br/><br/>
+            <input name="nombre" placeholder="Nombre Completo" required /><br/><br/>
+            <input name="dni" placeholder="DNI / Documento" required /><br/><br/>
+            <button type="submit" disabled={loading || !account}>Registrar</button>
+          </form>
+
+          {/* Nota simplificada para contratos y facturas */}
+          <p><i>* El resto de funciones de escritura (`registrarContrato` y `registrarFactura`) se ejecutan idénticamente extrayendo los inputs del formulario y pasándoselos al custom hook.</i></p>
+        </div>
+
+        {/* CONSULTAS DE LECTURA */}
+        <div>
+          <h2>🔍 Consultar Datos (Lectura)</h2>
+          
+          {/* Buscar Usuario */}
+          <div style={{ marginBottom: '25px', border: '1px solid #ccc', padding: '10px' }}>
+            <h3>Buscar Usuario por Wallet</h3>
+            <input 
+              placeholder="0x..." 
+              value={busqueda.wallet} 
+              onChange={e => setBusqueda({...busqueda, wallet: e.target.value})} 
+            />
+            <button onClick={handleBuscarUsuario} style={{ marginLeft: '10px' }}>Buscar</button>
+            {resultado.usuario ? (
+              <pre>{JSON.stringify(resultado.usuario, null, 2)}</pre>
+            ) : <p>No se ha buscado usuario o no existe.</p>}
+          </div>
+
+          {/* Buscar Contrato */}
+          <div style={{ border: '1px solid #ccc', padding: '10px' }}>
+            <h3>Buscar Contrato por ID</h3>
+            <input 
+              type="number" 
+              placeholder="ID del Contrato" 
+              value={busqueda.contratoId} 
+              onChange={e => setBusqueda({...busqueda, contratoId: e.target.value})} 
+            />
+            <button onClick={handleBuscarContrato} style={{ marginLeft: '10px' }}>Buscar</button>
+            {resultado.contracto ? (
+              <div>
+                <p><strong>Descripción:</strong> {resultado.contrato.descripcion}</p>
+                <p><strong>Préstamo:</strong> {resultado.contrato.valorPrestamo} ETH</p>
+                <p><strong>Porcentaje Tasa:</strong> {resultado.contrato.porcentajeMensual}%</p>
+                <p><strong>Facturas IDs vinculadas:</strong> {resultado.contrato.listaFacturasPagadas.join(', ')}</p>
+              </div>
+            ) : <p><br/>No se ha buscado contrato.</p>}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
