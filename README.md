@@ -1,4 +1,4 @@
-# Prouecyo Hackatom Etherium FacturaFi
+# Proyecto  Hackaton Etherium (FacturaFi)
 
 **Factoring de facturas on-chain para PYMEs peruanas.**
 FacturaFi convierte facturas por cobrar de PYMEs peruanas en liquidez inmediata, sin bancos. La PYME sube su factura, se tokeniza como un derecho de cobro único e inmutable, y un pool de inversionistas en stablecoins la financia al instante con un descuento calculado según el riesgo real de la operación. Cuando el cliente paga, el smart contract reparte automáticamente el retorno.
